@@ -1,11 +1,12 @@
 Summary:	GNU Compact Disc Input and Control Library
 Name:		libcdio
-Version:	0.83
+Version:	0.90
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	ftp://ftp.gnu.org/gnu/libcdio/%{name}-%{version}.tar.gz
-# Source0-md5:	b9e0f1bccb142e697cd834fe56b6e6fb
+# Source0-md5:	1b245b023fb03a58d030fd2800db3247
+Patch0:		%{name}-am.patch
 URL:		http://www.gnu.org/software/libcdio/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -59,10 +60,10 @@ libcdio utilities: cd-info, cd-read.
 
 %prep
 %setup -q
+%patch0 -p1
 
-sed -i 's| example$||' Makefile.am
-sed -i 's|libudf\.pc$|libudf.pc \\|' Makefile.am
-sed -i 's|ENABLE_CPP|ENABLE_CXX_BINDINGS|' Makefile.am
+%{__sed} -i 's| example$||' Makefile.am
+%{__sed} -i 's|ENABLE_CPP|ENABLE_CXX_BINDINGS|' Makefile.am
 
 %build
 cp /usr/share/gettext/config.rpath .
@@ -73,15 +74,15 @@ cp /usr/share/gettext/config.rpath .
 %{__automake}
 %configure \
 	--disable-static	\
-	--disable-vcd-info
+	--disable-vcd-info	\
+	--enable-cd-info-linux
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	mansubdir=/ja/man1
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -102,32 +103,22 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README THANKS TODO
 %attr(755,root,root) %ghost %{_libdir}/libcdio.so.??
-%attr(755,root,root) %ghost %{_libdir}/libcdio_cdda.so.?
-%attr(755,root,root) %ghost %{_libdir}/libcdio_paranoia.so.?
 %attr(755,root,root) %ghost %{_libdir}/libiso9660.so.?
 %attr(755,root,root) %ghost %{_libdir}/libudf.so.?
 %attr(755,root,root) %{_libdir}/libcdio.so.*.*.*
-%attr(755,root,root) %{_libdir}/libcdio_cdda.so.*.*.*
-%attr(755,root,root) %{_libdir}/libcdio_paranoia.so.*.*.*
 %attr(755,root,root) %{_libdir}/libiso9660.so.*.*.*
 %attr(755,root,root) %{_libdir}/libudf.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcdio.so
-%attr(755,root,root) %{_libdir}/libcdio_cdda.so
-%attr(755,root,root) %{_libdir}/libcdio_paranoia.so
 %attr(755,root,root) %{_libdir}/libiso9660.so
 %attr(755,root,root) %{_libdir}/libudf.so
 %{_libdir}/libcdio.la
-%{_libdir}/libcdio_cdda.la
-%{_libdir}/libcdio_paranoia.la
 %{_libdir}/libiso9660.la
 %{_libdir}/libudf.la
 %{_includedir}/cdio
 %{_pkgconfigdir}/libcdio.pc
-%{_pkgconfigdir}/libcdio_cdda.pc
-%{_pkgconfigdir}/libcdio_paranoia.pc
 %{_pkgconfigdir}/libiso9660.pc
 %{_pkgconfigdir}/libudf.pc
 %{_infodir}/libcdio.info*
@@ -151,7 +142,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files utils
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_bindir}/cd-drive
+%attr(755,root,root) %{_bindir}/cd-info
+%attr(755,root,root) %{_bindir}/cd-read
+%attr(755,root,root) %{_bindir}/cdda-player
+%attr(755,root,root) %{_bindir}/cdinfo-linux
+%attr(755,root,root) %{_bindir}/iso-info
+%attr(755,root,root) %{_bindir}/iso-read
+%attr(755,root,root) %{_bindir}/mmc-tool
 %{_mandir}/man1/*.1*
-%lang(ja) %{_mandir}/ja/man1/*.1*
 

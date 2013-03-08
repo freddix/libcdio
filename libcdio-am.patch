@@ -1,0 +1,12 @@
+diff -aurN libcdio-0.90.orig/Makefile.am libcdio-0.90/Makefile.am
+--- libcdio-0.90.orig/Makefile.am	2013-03-08 22:07:41.557249744 +0100
++++ libcdio-0.90/Makefile.am	2013-03-08 22:08:21.625696659 +0100
+@@ -34,7 +34,7 @@
+ 	libiso9660++.pc.in \
+ 	libudf.pc.in \
+ 	make-check-filter.rb \
+-	package/libcdio.spec.in 
++	package/libcdio.spec.in
+ 
+ SUBDIRS = doc include lib src test example
+ 
