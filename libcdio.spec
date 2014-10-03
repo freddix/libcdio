@@ -1,11 +1,11 @@
 Summary:	GNU Compact Disc Input and Control Library
 Name:		libcdio
-Version:	0.90
+Version:	0.92
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	ftp://ftp.gnu.org/gnu/libcdio/%{name}-%{version}.tar.gz
-# Source0-md5:	1b245b023fb03a58d030fd2800db3247
+# Source0-md5:	86f3f2869c1d34e4c6e52db77992b918
 Patch0:		%{name}-am.patch
 URL:		http://www.gnu.org/software/libcdio/
 BuildRequires:	autoconf
@@ -60,7 +60,7 @@ libcdio utilities: cd-info, cd-read.
 
 %prep
 %setup -q
-%patch0 -p1
+#%patch0 -p1
 
 %{__sed} -i 's| example$||' Makefile.am
 %{__sed} -i 's|ENABLE_CPP|ENABLE_CXX_BINDINGS|' Makefile.am
@@ -83,6 +83,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -114,9 +116,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libcdio.so
 %attr(755,root,root) %{_libdir}/libiso9660.so
 %attr(755,root,root) %{_libdir}/libudf.so
-%{_libdir}/libcdio.la
-%{_libdir}/libiso9660.la
-%{_libdir}/libudf.la
 %{_includedir}/cdio
 %{_pkgconfigdir}/libcdio.pc
 %{_pkgconfigdir}/libiso9660.pc
@@ -134,8 +133,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcdio++.so
 %attr(755,root,root) %{_libdir}/libiso9660++.so
-%{_libdir}/libcdio++.la
-%{_libdir}/libiso9660++.la
 %{_includedir}/cdio++
 %{_pkgconfigdir}/libcdio++.pc
 %{_pkgconfigdir}/libiso9660++.pc
